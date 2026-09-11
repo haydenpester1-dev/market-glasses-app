@@ -29,6 +29,25 @@ Edit `docs/symbols.json` — one entry per ticker:
 - Tiles are built from the feed, so a new entry appears on the next deploy.
   Around 8 tiles fit comfortably in the 600×600 grid.
 
+## Watchlist
+
+The app has a second view listing every ticker in `watchlist.txt` (vendored
+from the Slack monitor list) with live price and day change, sorted by biggest
+mover. Opening a ticker shows its price, change, and 30-day chart.
+
+- Quotes come from CNBC's quote API in a single batch request, refreshed with
+  the 15-minute poll. A few tickers whose symbols differ between sources fall
+  back to Yahoo (`YAHOO_OVERRIDES` in `poller/market_poll.py`).
+- 30-day charts are pre-fetched per ticker by `poller/history_poll.py` into
+  `docs/feed/history/<TICKER>.json`, refreshed daily at 6:00 AM ET
+  (`.github/workflows/poll-history.yml`).
+- If the monitor list changes, re-vendor it:
+  `tail -n +2 ~/workspace/sec-filings/tickers.txt > watchlist.txt`
+  (the first line of tickers.txt is a count, not a ticker).
+
+Glasses navigation: the footer **Watchlist** button (or D-pad) opens the list;
+↑/↓ moves one row, Enter opens the ticker, Esc goes back.
+
 Meta AI app → Settings → App Info → tap the app version 5 times (Developer
 Mode), then App Settings → App Connections → Web Apps → Add a Web App with
 the live URL above.
