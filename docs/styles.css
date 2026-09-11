@@ -1,0 +1,131 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  width: 600px;
+  height: 600px;
+  overflow: hidden;
+  background: #000;
+  color: #fff;
+  font-family: -apple-system, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+#app {
+  width: 600px;
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 26px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: #00d4ff;
+}
+
+.synced {
+  font-size: 17px;
+  color: #8a8f98;
+}
+
+main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 12px;
+  min-height: 0;
+}
+
+.tile {
+  background: #0c0c0e;
+  border: 2px solid #1e1e22;
+  border-radius: 16px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
+.tile .label {
+  font-size: 16px;
+  color: #9aa0a6;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.tile .row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.tile .value {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.tile .value small {
+  font-size: 18px;
+  font-weight: 400;
+  color: #9aa0a6;
+}
+
+.tile .change {
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tile .change.up { color: #4ade80; }
+.tile .change.down { color: #f87171; }
+.tile .change.flat { color: #6b7280; }
+
+.tile .chart {
+  height: 40px;
+  margin-top: 2px;
+}
+
+.tile .chart svg {
+  display: block;
+}
+
+footer {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+button {
+  background: #101014;
+  color: #00d4ff;
+  border: 2px solid #1e1e22;
+  border-radius: 14px;
+  font-size: 21px;
+  font-weight: 600;
+  padding: 10px 52px;
+  min-height: 58px;
+  cursor: pointer;
+}
+
+[data-focusable]:focus {
+  outline: none;
+  border-color: #00d4ff;
+  box-shadow: 0 0 18px rgba(0, 212, 255, 0.45);
+}
+
+.error .synced { color: #ff6b6b; }
