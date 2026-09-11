@@ -16,7 +16,18 @@ Live: https://haydenpester1-dev.github.io/market-glasses-app/
   explicit error state. Local preview: serve `docs/` and open
   `index.html?mock=1`.
 
-## Load onto the glasses
+## Adding tickers
+
+Edit `docs/symbols.json` — one entry per ticker:
+
+```json
+{"key": "nvda", "symbol": "NVDA", "label": "Nvidia", "kind": "index", "divisor": 1}
+```
+
+- `symbol` is the Yahoo Finance symbol (`AAPL`, `NVDA`, `TSLA`, `BTC-USD`, …).
+- `kind` is `index` (comma + 2 decimals) or `yield` (percent).
+- Tiles are built from the feed, so a new entry appears on the next deploy.
+  Around 8 tiles fit comfortably in the 600×600 grid.
 
 Meta AI app → Settings → App Info → tap the app version 5 times (Developer
 Mode), then App Settings → App Connections → Web Apps → Add a Web App with
