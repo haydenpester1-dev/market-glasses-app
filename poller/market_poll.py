@@ -20,8 +20,8 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 # docs/symbols.json, which is the file to edit when adding tickers.
 SYMBOLS_JSON = os.path.join(os.path.dirname(__file__), "..", "docs", "symbols.json")
 
-# Watchlist tickers (one per line, vendored from the Slack monitor list).
-WATCHLIST_TXT = os.path.join(os.path.dirname(__file__), "..", "watchlist.txt")
+# Curated ticker list shown on the glasses dashboard (one per line).
+WATCHLIST_TXT = os.path.join(os.path.dirname(__file__), "..", "glasses_watchlist.txt")
 
 # tickers whose Yahoo symbol differs from the watchlist spelling.
 YAHOO_OVERRIDES = {
