@@ -1,10 +1,8 @@
-name: Poll markets and deploy
+name: Poll watchlist history
 
 on:
-  push:
-    branches: [main]
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "0 10 * * *"  # 6:00 AM ET daily — history gains one point per day
   workflow_dispatch:
 
 permissions:
@@ -17,7 +15,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  poll-and-deploy:
+  poll-history:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -34,6 +32,9 @@ jobs:
 
       - name: Poll market data
         run: python poller/market_poll.py --out docs/feed/latest.json --watchlist-out docs/feed/watchlist.json
+
+      - name: Poll watchlist history
+        run: python poller/history_poll.py --history-dir docs/feed/history
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
