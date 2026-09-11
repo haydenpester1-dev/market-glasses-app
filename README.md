@@ -31,9 +31,10 @@ Edit `docs/symbols.json` — one entry per ticker:
 
 ## Watchlist
 
-The app has a second view listing every ticker in `watchlist.txt` (vendored
-from the Slack monitor list) with live price and day change, sorted by biggest
-mover. Opening a ticker shows its price, change, and 30-day chart.
+The app has a second view listing every ticker in `glasses_watchlist.txt`
+(a curated list — edit it to change what appears on the glasses) with live
+price and day change, sorted by biggest mover. Opening a ticker shows its
+price, change, and 30-day chart.
 
 - Quotes come from CNBC's quote API in a single batch request, refreshed with
   the 15-minute poll. A few tickers whose symbols differ between sources fall
@@ -41,9 +42,6 @@ mover. Opening a ticker shows its price, change, and 30-day chart.
 - 30-day charts are pre-fetched per ticker by `poller/history_poll.py` into
   `docs/feed/history/<TICKER>.json`, refreshed daily at 6:00 AM ET
   (`.github/workflows/poll-history.yml`).
-- If the monitor list changes, re-vendor it:
-  `tail -n +2 ~/workspace/sec-filings/tickers.txt > watchlist.txt`
-  (the first line of tickers.txt is a count, not a ticker).
 
 Glasses navigation: the footer **Watchlist** button (or D-pad) opens the list;
 ↑/↓ moves one row, Enter opens the ticker, Esc goes back.
