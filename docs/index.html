@@ -10,14 +10,46 @@
 </head>
 <body>
 <div id="app">
-  <header>
-    <div class="title">MARKETS</div>
-    <div class="synced" id="synced">connecting…</div>
-  </header>
-  <main id="grid"></main>
-  <footer>
-    <button id="refresh" data-focusable>Refresh</button>
-  </footer>
+  <section class="view active" id="view-home">
+    <header>
+      <div class="title">MARKETS</div>
+      <div class="synced" id="synced">connecting…</div>
+    </header>
+    <main id="grid"></main>
+    <footer>
+      <button id="to-list" data-focusable>Watchlist</button>
+      <button id="refresh" data-focusable>Refresh</button>
+    </footer>
+  </section>
+
+  <section class="view" id="view-list">
+    <header>
+      <div class="title">WATCHLIST</div>
+      <div class="synced" id="synced-wl">connecting…</div>
+    </header>
+    <main id="wl-wrap"><div id="wl-list"></div></main>
+    <footer>
+      <button id="to-home" data-focusable>Markets</button>
+      <button id="refresh2" data-focusable>Refresh</button>
+    </footer>
+  </section>
+
+  <section class="view" id="view-detail">
+    <header>
+      <div class="title" id="d-sym">–</div>
+      <div class="synced" id="d-asof"></div>
+    </header>
+    <main id="detail">
+      <div class="d-name" id="d-name"></div>
+      <div class="d-price" id="d-price">–</div>
+      <div class="d-change" id="d-change"></div>
+      <div class="d-chart" id="d-chart"></div>
+      <div class="d-range">30-day daily closes</div>
+    </main>
+    <footer>
+      <button id="to-back" data-focusable>← Back</button>
+    </footer>
+  </section>
 </div>
 <script src="app.js"></script>
 </body>
