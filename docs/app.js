@@ -10,14 +10,10 @@
   var REFRESH_MS = 5 * 60 * 1000;
   var UP = '#4ade80', DOWN = '#f87171', FLAT = '#6b7280';
 
-  var SYMBOLS = [
-    { key: 'spx',  label: 'S&P 500',    kind: 'index' },
-    { key: 'ndx',  label: 'Nasdaq 100', kind: 'index' },
-    { key: 'dji',  label: 'Dow',        kind: 'index' },
-    { key: 'es',   label: 'S&P Futures',kind: 'index' },
-    { key: 'vix',  label: 'VIX',        kind: 'vix'   },
-    { key: 't10y', label: '10-Yr Yield',kind: 'yield' }
-  ];
+  // Tiles are built from the feed itself, so adding a ticker to
+  // docs/symbols.json automatically adds a tile on the next deploy.
+  var SYMBOLS = [];
+  var builtKeys = '';
 
   function $(id) { return document.getElementById(id); }
 
@@ -94,6 +90,18 @@
 
   function render(d) {
     var syms = d.symbols || {};
+    var keys = Object.keys(syms);
+    if (!keys.length) { renderError(); return; }
+    var keyStr = keys.join(',');
+    if (keyStr !== builtKeys) {
+      builtKeys = keyStr;
+      SYMBOLS = keys.map(function (k) {
+        var sd = syms[k] || {};
+        return { key: k, label: sd.label || k.toUpperCase(), kind: sd.kind || 'index' };
+      });
+      buildTiles();
+      $('grid').style.gridTemplateRows = 'repeat(' + Math.ceil(keys.length / 2) + ', 1fr)';
+    }
     SYMBOLS.forEach(function (s) {
       var sd = syms[s.key] || {};
       sd.kind = s.kind;
@@ -179,7 +187,6 @@
     observer.observe(document.body, { childList: true, subtree: true });
   });
 
-  buildTiles();
   $('refresh').addEventListener('click', refresh);
 
   refresh();
