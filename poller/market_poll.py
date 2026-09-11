@@ -16,15 +16,14 @@ from datetime import datetime, timezone
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
 
-# (feed key, yahoo symbol, label, divisor)
-SYMBOLS = [
-    ("spx", "^GSPC", "S&P 500", 1),
-    ("ndx", "^NDX", "Nasdaq 100", 1),
-    ("dji", "^DJI", "Dow", 1),
-    ("es", "ES=F", "S&P Futures", 1),
-    ("vix", "^VIX", "VIX", 1),
-    ("t10y", "^TNX", "10-Yr Yield", 1),  # quoted directly in percent (4.94 = 4.94%)
-]
+# (feed key, yahoo symbol, label, kind, divisor) — also lives in
+# docs/symbols.json, which is the file to edit when adding tickers.
+SYMBOLS_JSON = os.path.join(os.path.dirname(__file__), "..", "docs", "symbols.json")
+
+
+def load_symbols():
+    with open(SYMBOLS_JSON) as fh:
+        return json.load(fh)
 
 
 def eprint(*a):
@@ -76,21 +75,26 @@ def main():
         "generated_at": datetime.now(timezone.utc).isoformat(),
         "symbols": {},
     }
+    symbols = load_symbols()
     ok = 0
-    for key, sym, label, divisor in SYMBOLS:
+    for entry in symbols:
+        key, sym = entry["key"], entry["symbol"]
+        label, kind = entry.get("label", key.upper()), entry.get("kind", "index")
+        divisor = entry.get("divisor", 1)
         try:
             d = parse(sym, divisor)
             d["label"] = label
+            d["kind"] = kind
             feed["symbols"][key] = d
             ok += 1
             eprint(f"ok: {label} {d['price']} ({d['change_pct']:+.2f}%)")
         except Exception as exc:  # noqa: BLE001 - one bad symbol must not kill the feed
             eprint(f"warn: {sym} failed: {exc}")
-            feed["symbols"][key] = {"label": label, "price": None}
+            feed["symbols"][key] = {"label": label, "kind": kind, "price": None}
         time.sleep(1)  # be gentle with the quote API
 
-    if ok < 4:
-        raise SystemExit(f"only {ok}/6 symbols parsed; refusing to write feed")
+    if ok < max(1, len(symbols) // 2):
+        raise SystemExit(f"only {ok}/{len(symbols)} symbols parsed; refusing to write feed")
 
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     tmp = args.out + ".tmp"
